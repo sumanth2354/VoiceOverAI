@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Processing…</title>
+<style>
+    body {
+        font-family: 'Segoe UI', sans-serif;
+        background-color: #f9f9f9;
+        color: #333;
+        text-align: center;
+        padding: 30px 10px;
+    }
+    h2 {
+        color: #444;
+        margin-bottom: 20px;
+    }
+    .progress-container {
+        width: 90%;
+        max-width: 400px;
+        margin: 20px auto;
+        background: #e9ecef;
+        border-radius: 20px;
+        overflow: hidden;
+    }
+    .progress-bar {
+        height: 24px;
+        width: 0%;
+        background: #007bff;
+        color: #fff;
+        line-height: 24px;
+        text-align: center;
+        transition: width 0.4s ease;
+        font-size: 13px;
+    }
+    #status {
+        margin-top: 20px;
+        font-weight: 500;
+    }
+    a {
+        display: inline-block;
+        margin-top: 15px;
+        padding: 8px 16px;
+        background: #007bff;
+        color: #fff;
+        text-decoration: none;
+        border-radius: 4px;
+        font-size: 14px;
+    }
+    a:hover {
+        background: #0056b3;
+    }
+</style>
+</head>
+<body>
+
+<h2>We are dubbing your video…</h2>
+
+<div class="progress-container">
+    <div id="bar" class="progress-bar">0%</div>
+</div>
+
+<div id="status">Starting…</div>
+
+<script>
+const jobId = "{{ job_id }}";
+
+function updateStatus() {
+    fetch(`/status/${jobId}`)
+        .then(r => r.json())
+        .then(data => {
+            document.getElementById('status').innerText = data.status;
+            const bar = document.getElementById('bar');
+            bar.style.width = data.progress + '%';
+            bar.textContent = data.progress + '%';
+
+            if (data.progress >= 100) {
+                document.getElementById('status').innerHTML =
+                    `<b>Done!</b> <a href="${data.video_url}">Download Video</a>`;
+            } else {
+                setTimeout(updateStatus, 1000);
+            }
+        });
+}
+updateStatus();
+</script>
+
+</body>
+</html>
