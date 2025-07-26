@@ -5,3 +5,4 @@ openai-whisper==20231117
 requests>=2.25.1
 numpy>=1.19.0
 torch>=1.9.0 
+.
