@@ -1,0 +1,7 @@
+Flask==2.3.3
+gTTS==2.4.0
+translatepy==2.9.0
+openai-whisper==20231117
+requests>=2.25.1
+numpy>=1.19.0
+torch>=1.9.0 
